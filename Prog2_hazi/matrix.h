@@ -23,7 +23,7 @@ public:
 	matrix& del_row(int ezt = 0) const;
 	matrix& del_col(int ezt = 0) const;
 
-	void print(std::ostream& = std::cout);
+	void print(std::ostream & = std::cout);
 	/*Basic Test*/
 
 
@@ -42,11 +42,12 @@ public:
 
 
 	/*Matrix Operator Test*/
-	matrix& operator+(matrix& theother) const;
-	matrix& operator*(matrix& theother) const;
-	matrix& operator*(double scalar) const;
+	matrix& operator+(const matrix& theother) const;
+	matrix& operator*(const matrix& theother) const;
+	matrix& operator*(const double scalar) const;
+	void operator=(const matrix& theother);
 
-	matrix& operator&(matrix& theother) const;	//Egymás után fûz két mátrixot
+	matrix& operator&(const matrix& theother) const;	//Egymás után fûz két mátrixot
 	/*Matrix Operator Test*/
 };
 

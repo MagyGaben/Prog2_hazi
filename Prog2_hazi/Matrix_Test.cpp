@@ -45,7 +45,7 @@ int main(void)
 
 	/*Operator Test*/
 
-	/*
+	
 	matrix egyik(3);
 	cout << "Testing Multiplication with Scalar:" << endl << endl;
 	matrix masik = (egyik * 3);
@@ -59,7 +59,7 @@ int main(void)
 	cout << "Testing & Operator:" << endl << endl;
 	harmadik = egyik & masik;
 	harmadik.print();
-	*/
+	
 
 	/*Operator Test*/
 

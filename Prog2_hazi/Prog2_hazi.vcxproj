@@ -131,7 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="matrix.cpp" />
-    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="Matrix_Test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
