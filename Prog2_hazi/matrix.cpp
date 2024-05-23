@@ -1,5 +1,7 @@
+#include "memtrace.h"
 #include "matrix.h"
 #include <math.h>
+using namespace std;
 
 matrix::matrix()	//Constructor without values
 {
@@ -7,52 +9,72 @@ matrix::matrix()	//Constructor without values
 	data = nullptr;
 }
 
-matrix::matrix(int n, int m, double** data) //Constructor with values
+matrix::matrix(int n, int m, vector<double>* data) //Constructor with values
 {
 	this->n = n;
 	this->m = m;
-	this->data = data;
 	this->data = data;
 }
 
 matrix::matrix(int Size)	//Size sized identity matrix
 {
 	n = Size; m = Size;
-	this->data = new double* [Size];
-	for (int i = 0; i < Size; i++)
-	{
-		this->data[i] = new double[Size];
-	}
-
-
+	this->data = new vector<double>[n];
 	for (int i = 0; i < Size; i++)
 	{
 		for (int j = 0; j < Size; j++)
 		{
-			if (i == j) this->data[i][j] = 1.0;
-			else this->data[i][j] = 0.0;
+			if (i == j) this->data[i].push_back(1.0);
+			else this->data[i].push_back(0.0);
 		}
 	}
 }
 
-matrix::matrix(matrix& ref)	//Copy Constructor
+matrix::matrix(const matrix& ref) : n(ref.n), m(ref.m)	//Copy Constructor
 {
-	*this = ref;
+	this->data = new vector<double>[ref.n];
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			this->data[i].push_back(ref.data[i][j]);
+		}
+	}
+}
+
+matrix::matrix(vector<double> v) : n(1), m(v.size())
+{
+	this->data = new vector<double>[1];
+	data[0] = v;
+	matrix tmp = this->T();
+	*this = tmp;
 }
 
 matrix::~matrix() //Destructor
 {
-	for (int i = 0; i < n; i++)
-	{
-		delete[] data[i];
-	}
 	delete[] data;
-	data = nullptr;	//enélkül hibát dob néhány függvény
+	data = nullptr;	//needed for some functions
 	n = 0;
 	m = 0;
 }
 
-bool matrix::fill(int n, int m, double* data)	//Array to matrix filler
+int matrix::getn() const
+{
+	return n;
+}
+
+int matrix::getm() const
+{
+	return m;
+}
+
+vector<double>* matrix::getData() const
+{
+	return data;
+}
+
+bool matrix::fill(int n, int m, vector<double> data)	//Array to matrix filler
 {
 	if (this->data != nullptr)
 	{
@@ -60,11 +82,7 @@ bool matrix::fill(int n, int m, double* data)	//Array to matrix filler
 	}	//Avoiding memory leak
 
 	//Creating new matrix
-	this->data = new double* [n];
-	for (int i = 0; i < n; i++)
-	{
-		this->data[i] = new double[m];
-	}
+	this->data = new vector<double>[n];
 
 	//Filling matrix with given values
 	for (int i = 0; i < n; i++)
@@ -79,7 +97,7 @@ bool matrix::fill(int n, int m, double* data)	//Array to matrix filler
 	return true;
 }
 
-bool matrix::fill(int n, int m, double** data)	//2 dimension array to matrix filler
+bool matrix::fill(const int n, const int m, vector<double>* Data)	//2 dimension array to matrix filler
 {
 	if (this->data != nullptr)
 	{
@@ -87,18 +105,15 @@ bool matrix::fill(int n, int m, double** data)	//2 dimension array to matrix fil
 	}	//Avoiding memory leak
 
 	//Creating new matrix
-	this->data = new double* [n];
-	for (int i = 0; i < n; i++)
-	{
-		this->data[i] = new double[m];
-	}
+	vector<double>* dat = new vector<double>[n];
+	this->data = dat;
 
 	//Filling matrix with given values
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < m; j++)
 		{
-			this->data[i][j] = data[i][j];
+			this->data[i].push_back(Data[i][j]);
 		}
 	}
 	this->n = n;
@@ -114,18 +129,14 @@ bool matrix::fill(int n, int m, double value) //Fills matrix with one value
 	}	//Avoiding memory leak
 
 	//Creating new matrix
-	this->data = new double* [n];
-	for (int i = 0; i < n; i++)
-	{
-		this->data[i] = new double[m];
-	}
+	this->data = new vector<double>[n];
 
 	//Filling matrix with given value
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < m; j++)
 		{
-			this->data[i][j] = value;
+			this->data[i].push_back(value);
 		}
 	}
 	this->n = n;
@@ -135,64 +146,46 @@ bool matrix::fill(int n, int m, double value) //Fills matrix with one value
 
 bool matrix::null()	//erase values from matrix, fills it with 0
 {
-	if (data == nullptr) return false;
-	this->fill(n, m, 0.0);
+	this->fill(this->n, this->m, 0.0);
 	return true;
 }
 
 bool matrix::null(int n, int m)	//fills matrix with zeros if the matrix has no values yet
 {
-	if (data != nullptr) return false;
 	this->fill(n, m, 0.0);
 	return true;
 }
 
-matrix& matrix::del_row(int ezt) const	//returns this matrix without the selected row
+matrix matrix::del_row(int ezt) const	//returns this matrix without the selected row
 {
-	matrix* sol = new matrix;
-	if (this->data == nullptr)
-	{
-		return *sol;
-	}
-	sol->n = this->n - 1;
-	sol->m = this->m;
-	sol->data = new double* [n];
+	vector<double>* dat = new vector<double>[this->n - 1];
 	for (int i = 0; i < n - 1;i++)
 	{
-		sol->data[i] = new double[m];
 		for (int j = 0; j < m; j++)
 		{
 
-			sol->data[i][j] = (this->data[i + int(i >= ezt)][(j)]);
+			dat[i].push_back(this->data[i + int(i >= ezt)][(j)]);
 
 		}
 
 	}
-	return *sol;
+	return matrix((this->n) - 1, this->m, dat);
 }
 
-matrix& matrix::del_col(int ezt) const	//returns this matrix without the selected column
+matrix matrix::del_col(int ezt) const	//returns this matrix without the selected column
 {
-	matrix* sol = new matrix;
-	if (this->data == nullptr)
-	{
-		return *sol;
-	}
-	sol->n = this->n;
-	sol->m = this->m - 1;
-	sol->data = new double* [n];
+	vector<double>* dat = new vector<double>[this->n];
 	for (int i = 0; i < n;i++)
 	{
-		sol->data[i] = new double[m - 1];
 		for (int j = 0; j < (m - 1); j++)
 		{
 
-			sol->data[i][j] = (this->data[i][(j + int(j >= ezt))]);
+			dat[i].push_back(this->data[i][(j + int(j >= ezt))]);
 
 		}
 
 	}
-	return *sol;
+	return matrix(n, m - 1, dat);
 }
 
 void matrix::print(std::ostream& out)	//prints matrix to the selected output, if nothing selected, uses standard output
@@ -207,7 +200,7 @@ void matrix::print(std::ostream& out)	//prints matrix to the selected output, if
 	{
 		for (int j = 0; j < m; j++)
 		{
-			out << data[i][j] << ", ";
+			out << data[i][j] << ",\t";
 		}
 		out << std::endl;
 	}
@@ -215,21 +208,59 @@ void matrix::print(std::ostream& out)	//prints matrix to the selected output, if
 	return;
 }
 
-matrix& matrix::T() const	//returns transpose of matrix
+double matrix::gauss()
 {
-	matrix* sol = new matrix;
-	sol->m = this->n;
-	sol->n = this->m;
-	sol->data = new double* [sol->n];
-	for (size_t i = 0; i < m; i++)
-	{
-		sol->data[i] = new double[sol->m];
-		for (size_t j = 0; j < n; j++)
+	double ret = 1.0;
+	double tmp;
+	int j = 0;
+	matrix temp;
+	for (size_t i = 0; i < n; i++)
+	{	
+		while ((this->data[i][i]) == 0.0)
 		{
-			sol->data[i][j] = this->data[j][i];
+			temp = this->del_col(0);
+			for (size_t i = 0; i < n; i++)
+			{
+				(temp.data[i]).push_back(this->data[i][0]);
+			}
+			temp.m++;
+			j++;
+			if (j == n+1) 
+				return 0.0;
+			ret *= pow(-1, n + 1);
+			this->fill(n, m, temp.data);
+		}
+		tmp = data[i][i];
+		ret *= tmp;
+		j = 0;
+		for (size_t j = 0; j < m; j++)
+		{
+			data[i][j] /= tmp;
+		}
+		for (size_t k = (i + 1); k < n; k++)
+		{
+			tmp = data[k][i];
+			for (size_t j = 0; j < m; j++)
+			{
+				data[k][j] -= tmp * data[i][j];
+			}
+
 		}
 	}
-	return *sol;
+	return ret;
+}
+
+matrix matrix::T() const	//returns transpose of matrix
+{
+	vector<double>* dat = new vector<double>[this->m];
+	for (size_t i = 0; i < m; i++)
+	{
+		for (size_t j = 0; j < n; j++)
+		{
+			dat[i].push_back(this->data[j][i]);
+		}
+	}
+	return matrix(m, n, dat);
 }
 
 double matrix::determinant() const	//returns determinant of matrix
@@ -247,133 +278,201 @@ double matrix::determinant() const	//returns determinant of matrix
 		matrix tmp = this->del_row(0);
 		matrix rex = tmp.del_col(i);
 		sum *= rex.determinant();
+		rex.~matrix();
+		tmp.~matrix();
 		sol += sum;
 	}
 	return sol;
 }
 
-matrix& matrix::inverse() const	//returns inverse matrix of this
+double matrix::qdeterminant() const
 {
-	double det = (1 / (this->determinant()));
-	matrix* sol = new matrix;
-	if ((this->determinant()) == 0.0) return *sol;
-	sol->data = new double* [n];
-	for (size_t i = 0; i < n; i++)
+	if (n < 3) return this->determinant();
+	matrix tmp(*this);
+	double d = tmp.gauss();
+	tmp.~matrix();
+	return d;
+}
+
+matrix matrix::inverse() const	//returns inverse matrix of this
+{
+	//Inv(A) = Transpose(A*)  
+	try
 	{
-		sol->data[i] = new double[m];
-		for (size_t j = 0; j < m; j++)
+		double deter = this->qdeterminant();
+		if (deter == 0.0)
 		{
-			int k = pow(-1, i + j);
-			matrix tmp = this->del_row(i);
-			matrix rex = tmp.del_col(j);
-			sol->data[i][j] = rex.determinant() * k;
+			throw (string)"Math Error: Zero Determinant";
 		}
-	}	//adjoint matrix
+	double det = (1 / (deter));
+		if (n == 1)
+		{
+			vector<double>* temp = new vector<double>[1];
+			temp[0].resize(1);
+			temp[0][0] = (det);
+			return matrix(n, m, temp);
+		}
+		vector<double>* dat = new vector<double>[this->n];//adjoint matrix
+		for (size_t i = 0; i < n; i++)
+		{
+			for (size_t j = 0; j < m; j++)
+			{
+				int k = pow(-1, i + j);
+				matrix tmp = this->del_row(i);
+				matrix rex = tmp.del_col(j);
+				dat[i].push_back(rex.qdeterminant() * k);
+				tmp.~matrix();
+				rex.~matrix();
+			}
+		}	//adjoint matrix
 
-	sol->n = n;
-	sol->m = m;
 
-	*sol = *sol * det;
-	*sol = sol->T();
-	return *sol;
+		matrix tmp(n, m, dat);
+		tmp = tmp.T();
+		vector<double>* ret = new vector<double>[tmp.n];
+		for (size_t i = 0; i < n; i++)
+		{
+			for (size_t j = 0; j < m; j++)
+			{
+				ret[i].push_back(tmp.data[i][j]*det);
+			}
+		}
+
+		return matrix(n, m, ret);
+	}
+	catch (string s)
+	{
+		cout << s;
+	}
+	return matrix();
+}
+
+void matrix::plusat(const double d, const unsigned i, const unsigned j)
+{
+	this->data[i][j] += d;
 }
 
 
 
-matrix& matrix::operator+(const matrix& theother) const	//addition of matrices
+matrix matrix::operator+(const matrix& theother) const	//addition of matrices
 {
-	matrix* sol = new matrix;
+	vector<double>* dat;
 	if (this->n != theother.n || this->m != theother.m)
 	{
-		return *sol;
+		return matrix();
 	}
-	sol->n = n;
-	sol->m = m;
-	sol->data = new double* [n];
+	dat = new vector<double>[this->n];
 	for (size_t i = 0; i < n; i++)
 	{
-		sol->data[i] = new double[m];
 		for (size_t j = 0; j < m; j++)
 		{
-			sol->data[i][j] = theother.data[i][j] + this->data[i][j];
+			dat[i].push_back(theother.data[i][j] + this->data[i][j]);
 		}
 	}
-	return *sol;
+	return matrix(n, m, dat);
 }
 
-matrix& matrix::operator*(const matrix& theother) const	//multiplication of matrices
+matrix matrix::operator*(const matrix& theother) const 	//multiplication of matrices
 {
-	matrix* sol = new matrix;
-	if (this->n != theother.m || this->m != theother.n)
+	if (this->m != theother.n)
 	{
-		return *sol;
+		return matrix();
 	}
-	sol->n = this->n;
-	sol->m = this->n;
-	sol->data = new double* [n];
+	vector<double>* dat = new vector<double>[this->n];
+	double tmp;
 	for (size_t i = 0; i < n; i++)
 	{
-		sol->data[i] = new double[n];
-		for (size_t j = 0; j < n; j++)
+		for (size_t j = 0; j < theother.m; j++)
 		{
-			double c = 0;
-			for (size_t l = 0; l < m; l++)
+			tmp = 0;
+			for (size_t k = 0; k < this->m; k++)
 			{
-				c += this->data[i][l] * theother.data[l][j];
+				tmp += this->data[i][k] * theother.data[k][j];
 			}
-
-			sol->data[i][j] = c;
+			dat[i].push_back(tmp);
 		}
 	}
-	return *sol;
+	return matrix(this->n, theother.m, dat);
 }
 
-matrix& matrix::operator*(const double scalar) const	//multiplication of matrices with scalar
+matrix matrix::operator*(const vector<double>& theother) const
 {
-	matrix* sol = new matrix;
-	sol->n = this->n;
-	sol->m = this->m;
-	sol->data = new double* [n];
+	matrix tmp(theother);
+	return *this*tmp;
+}
+
+matrix matrix::operator*(const double scalar) const 	//multiplication of matrices with scalar
+{
+	vector<double >* dat = new vector<double>[this->n];
 	for (size_t i = 0; i < n; i++)
 	{
-		sol->data[i] = new double[m];
 		for (size_t j = 0; j < m; j++)
 		{
-			sol->data[i][j] = scalar * this->data[i][j];
+			dat[i].push_back(scalar * this->data[i][j]);
 		}
 	}
-	return *sol;
+	return matrix(n, m, dat);
 }
 
-void matrix::operator=(const matrix& theother) /*Currently out of useage*/
+void matrix::operator=(const matrix& theother)
 {
+	if (this->data != nullptr)
+	{
+		this->~matrix();
+	}
 	this->n = theother.n;
 	this->m = theother.m;
-	fill(theother.n, theother.m, theother.data);
-}
-
-matrix& matrix::operator&(const matrix& theother) const	//copies another matrix right nex to this
-{
-	matrix* sol = new matrix;
-	if (this->n != theother.n)
-	{
-		return *sol;
-	}
-	sol->n = this->n;
-	sol->m = this->m + theother.m;
-	sol->data = new double* [n];
+	this->data = new vector<double>[this->n];
 	for (size_t i = 0; i < n; i++)
 	{
-		sol->data[i] = new double[this->m + theother.m];
+		for (size_t j = 0; j < m; j++)
+		{
+			this->data[i].push_back(theother.data[i][j]);
+		}
+	}
+}
+
+vector<double> matrix::operator[](const unsigned i) const
+{
+	return data[i];
+}
+
+
+
+matrix matrix::operator&(const matrix& theother) const	//copies another matrix right nex to this
+{
+	vector<double>* dat = new vector<double>[this->n];
+	for (size_t i = 0; i < n; i++)
+	{
 		for (size_t j = 0; j < this->m; j++)
 		{
-			sol->data[i][j] = this->data[i][j];
+			dat[i].push_back(this->data[i][j]);
 		}
 		for (size_t j = 0; j < theother.m; j++)
 		{
-			sol->data[i][j + this->m] = theother.data[i][j];
+			dat[i].push_back(theother.data[i][j]);
 		}
 	}
+	return matrix(this->n, this->m + theother.m, dat);
+}
 
-	return*sol;
+ostream& operator<<(ostream& out, const matrix& op)
+{
+	if ((op.m == 0) || (op.n == 0)) return out;
+	out << "row:\t" << op.n << std::endl;
+	out << "column:\t" << op.m << std::endl << std::endl;
+	if (op.data == nullptr)
+	{
+		return out;
+	}
+	for (int i = 0; i < op.n; i++)
+	{
+		for (int j = 0; j < op.m; j++)
+		{
+			out << op.data[i][j] << ", ";
+		}
+		out << endl;
+	}
+	out << endl;
+	return out;
 }

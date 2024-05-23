@@ -1,0 +1,64 @@
+Welcome to Systems and Signals Solver!
+
+Choose from the following functions:
+
+	0. Exit
+	1. Matrix Calculator
+	2. Resistence Calculator
+	3. Lin-NDin Solver
+
+
+
+Number of Verticles:
+Now you can add the dipoles(edges), note, to first give the verticle where the
+voltage points from to another
+Index of the first verticle(from):
+(-1 to exit)
+Index of the second verticle(to):
+Cathegory:
+	Resistance:1
+	Transformer:2
+	Gyrator:3
+	Voltage Source:4
+	Current Source:5
+Voltage value:
+Index of the first verticle(from):
+(-1 to exit)
+Index of the second verticle(to):
+Cathegory:
+	Resistance:1
+	Transformer:2
+	Gyrator:3
+	Voltage Source:4
+	Current Source:5
+Resistence value:
+Index of the first verticle(from):
+(-1 to exit)
+Index of the second verticle(to):
+Cathegory:
+	Resistance:1
+	Transformer:2
+	Gyrator:3
+	Voltage Source:4
+	Current Source:5
+Resistence value:
+Index of the first verticle(from):
+(-1 to exit)
+Choose from the following answers:
+	 0.Current	 1. Voltage
+n:	2
+b:	3
+l:	2
+
+
+
+Give the index of edges to make 2 loops
+
+Loop 1. : 
+How many branches? 
+Indexes of the branches: 
+Loop 2. : 
+How many branches? 
+Indexes of the branches: 
+The index of the edge, with the current in question:
+The current in question:	-2

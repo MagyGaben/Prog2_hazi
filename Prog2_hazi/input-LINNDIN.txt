@@ -1,0 +1,18 @@
+Function:
+3
+Verticles:
+2
+Edges with -1 in the end:
+0 1 4 6
+0 1 1 6
+1 0 1 6
+-1
+Voltage/Current as answer:
+0
+Number of Edges in loops | then index of edges:
+2
+0 1 
+2
+1 2
+Index of the dipol of question:
+1

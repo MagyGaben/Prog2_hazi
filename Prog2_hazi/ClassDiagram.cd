@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Edge">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEgAAAgAAIAAAAQAARAAgAQAAICECIEA=</HashCode>
+      <FileName>Edge.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Gyrator">
+    <Position X="9.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAQIBAAAAAAABAAAAAEA=</HashCode>
+      <FileName>Gyrator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="graph">
+    <Position X="9.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAACBAAJAAAAAAAAAACAAACAAAFRBUAgEQAAE=</HashCode>
+      <FileName>graph.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="menu">
+    <Position X="12" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIEAAIIAABACgAAAAQAoAAAAAgAAAAAABCMAAAQI=</HashCode>
+      <FileName>menu.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="I_src">
+    <Position X="0.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAgAAAAAAgQABAAAAAAAAAAAAIEA=</HashCode>
+      <FileName>I_src.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Resistance">
+    <Position X="2.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAQAAAAAAAAQABAAAAAAAgAABIAUA=</HashCode>
+      <FileName>Resistance.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Transformer">
+    <Position X="7.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAIAAAAAAQABAAAAEAAQAAAAAEA=</HashCode>
+      <FileName>Transformer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TwoPort">
+    <Position X="8.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAACAAAQAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>TwoPort.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Verticle">
+    <Position X="1" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AFQAAACAAKCKAAAAAAIAAAAAABAIFEAAAAAABAAAAAA=</HashCode>
+      <FileName>Verticle.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="matrix">
+    <Position X="11.75" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQQAAAAAAAIAgAAIAAAACAAIIEAQgACEggyEAAEAAA=</HashCode>
+      <FileName>matrix.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="V_src">
+    <Position X="5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAIEAAQABAAAAAAAAAAAQAEA=</HashCode>
+      <FileName>V_src.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

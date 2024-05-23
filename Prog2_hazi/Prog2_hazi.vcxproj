@@ -102,7 +102,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;MEMTRACE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -116,22 +116,55 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;EXISTING_MACRO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/D "MEMTRACE" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/D MEMTRACE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Edge.h" />
+    <ClInclude Include="Gyrator.h" />
+    <ClInclude Include="graph.h" />
+    <ClInclude Include="memtrace.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="Tester.h" />
+    <ClInclude Include="I_src.h" />
+    <ClInclude Include="Resistance.h" />
+    <ClInclude Include="Transformer.h" />
+    <ClInclude Include="TwoPort.h" />
+    <ClInclude Include="Verticle.h" />
     <ClInclude Include="matrix.h" />
+    <ClInclude Include="V_src.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Edge.cpp" />
+    <ClCompile Include="Gyrator.cpp" />
+    <ClCompile Include="graph.cpp" />
+    <ClCompile Include="I_src.cpp" />
+    <ClCompile Include="memtrace.cpp" />
+    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="Resistance.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Graph_Test.cpp" />
+    <ClCompile Include="Transformer.cpp" />
+    <ClCompile Include="TwoPort.cpp" />
+    <ClCompile Include="Verticle.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="Matrix_Test.cpp" />
+    <ClCompile Include="V_src.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Prog2_hazi.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
